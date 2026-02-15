@@ -213,7 +213,7 @@ const app = express();
 ================================= */
 
 const PORT = 5000;
-const VPS_IP = "171.61.173.243"; // <-- change if IP changes
+const VPS_IP = "72.62.230.173"; 
 const MEDIAMTX_PATH = path.join(process.cwd(), "mediamtx");
 const CONFIG_PATH = path.join(process.cwd(), "mediamtx.yml");
 
