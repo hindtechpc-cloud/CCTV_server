@@ -73,8 +73,68 @@
 
 // app.listen(5000, () => console.log("Server running on port 5000"));
 
+// with web rtc
 
+// import express from "express";
+// import cors from "cors";
+// import { readFileSync } from "fs";
+// import { spawn } from "child_process";
+// import path from "path";
+// import YAML from "yaml";
 
+// const app = express();
+// app.use(cors());
+// app.use(express.json());
+
+// const MEDIAMTX_PATH = "/usr/local/Cellar/mediamtx/1.16.1/bin/mediamtx";
+// const CONFIG_PATH = path.join(process.cwd(), "mediamtx.yml");
+
+// let mediaProcess = null;
+
+// // Start MediaMTX
+// const startMediaMTX = () => {
+//   if (mediaProcess) mediaProcess.kill();
+
+//   mediaProcess = spawn(MEDIAMTX_PATH, [CONFIG_PATH]);
+
+//   mediaProcess.stdout.on("data", (data) => {
+//     console.log(`[MediaMTX] ${data}`);
+//   });
+
+//   mediaProcess.stderr.on("data", (data) => {
+//     console.error(`[MediaMTX ERROR] ${data}`);
+//   });
+// };
+
+// // 🔥 NEW: Read all streams from YAML
+// const getAllStreams = () => {
+//   const file = readFileSync(CONFIG_PATH, "utf8");
+//   const parsed = YAML.parse(file);
+
+//   if (!parsed.paths) return [];
+
+//   const streams = Object.keys(parsed.paths).map((pathName) => ({
+//     name: pathName,
+//     hlsUrl: `http://localhost:8888/${pathName}`,
+//   }));
+
+//   return streams;
+// };
+
+// // API: get all streams
+// app.get("/api/streams", (req, res) => {
+//   try {
+//     const streams = getAllStreams();
+//     res.json({ streams });
+//   } catch (err) {
+//     res.status(500).json({ message: "Failed to read streams" });
+//   }
+// });
+
+// app.listen(5000, () => {
+//   console.log("Server running on port 5000");
+//   startMediaMTX();
+// });
 
 import express from "express";
 import cors from "cors";
@@ -107,7 +167,7 @@ const startMediaMTX = () => {
   });
 };
 
-// 🔥 NEW: Read all streams from YAML
+// Read all streams from YAML
 const getAllStreams = () => {
   const file = readFileSync(CONFIG_PATH, "utf8");
   const parsed = YAML.parse(file);
@@ -116,13 +176,13 @@ const getAllStreams = () => {
 
   const streams = Object.keys(parsed.paths).map((pathName) => ({
     name: pathName,
-    hlsUrl: `https://inkjet-sections-children-journalists.trycloudflare.com/${pathName}`,
+    hlsUrl: `http://localhost:8888/${pathName}/index.m3u8`,
   }));
 
   return streams;
 };
 
-// API: get all streams
+// API
 app.get("/api/streams", (req, res) => {
   try {
     const streams = getAllStreams();

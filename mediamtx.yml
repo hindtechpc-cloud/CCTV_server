@@ -1,3 +1,7 @@
+hls: yes
+hlsAlwaysRemux: yes
+hlsSegmentCount: 7
+hlsSegmentDuration: 2s
 
 paths:
   cam1:
@@ -16,4 +20,3 @@ paths:
     source: rtsp://admin:admin%40123@223.236.94.105:554/cam/realmonitor?channel=7&subtype=0
   cam8:
     source: rtsp://admin:admin%40123@223.236.94.105:554/cam/realmonitor?channel=8&subtype=0
-     
