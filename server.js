@@ -196,7 +196,6 @@
 //   console.log("Server running on port 5000");
 //   startMediaMTX();
 // });
-
 import express from "express";
 import cors from "cors";
 import { readFileSync } from "fs";
@@ -211,7 +210,6 @@ const app = express();
 ================================= */
 
 const PORT = 5000;
-const VPS_IP = "72.62.230.173";
 const MEDIAMTX_PATH = path.join(process.cwd(), "mediamtx");
 const CONFIG_PATH = path.join(process.cwd(), "mediamtx.yml");
 
@@ -223,7 +221,7 @@ let mediaProcess = null;
 
 app.use(
   cors({
-    origin: "*", // allow any domain
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
@@ -236,9 +234,7 @@ app.use(express.json());
 ================================= */
 
 const startMediaMTX = () => {
-  if (mediaProcess) {
-    mediaProcess.kill();
-  }
+  if (mediaProcess) mediaProcess.kill();
 
   mediaProcess = spawn(MEDIAMTX_PATH, [CONFIG_PATH]);
 
@@ -269,9 +265,10 @@ const getAllStreams = () => {
 
   if (!parsed.paths) return [];
 
+  // Use standard HTTPS domain without port
   return Object.keys(parsed.paths).map((pathName) => ({
     name: pathName,
-    hlsUrl: `http://api.productware.in:8888/${pathName}/index.m3u8`,
+    hlsUrl: `https://api.productware.in/${pathName}/index.m3u8`,
   }));
 };
 
@@ -279,7 +276,8 @@ const getAllStreams = () => {
    ROUTES
 ================================= */
 
-app.get("/api/streams", (req, res) => {
+// Change route to /streams to match Nginx proxy
+app.get("/streams", (req, res) => {
   try {
     const streams = getAllStreams();
     res.json({ streams });
