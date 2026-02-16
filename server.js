@@ -197,8 +197,6 @@
 //   startMediaMTX();
 // });
 
-
-
 import express from "express";
 import cors from "cors";
 import { readFileSync } from "fs";
@@ -213,7 +211,7 @@ const app = express();
 ================================= */
 
 const PORT = 5000;
-const VPS_IP = "72.62.230.173"; 
+const VPS_IP = "72.62.230.173";
 const MEDIAMTX_PATH = path.join(process.cwd(), "mediamtx");
 const CONFIG_PATH = path.join(process.cwd(), "mediamtx.yml");
 
@@ -228,7 +226,7 @@ app.use(
     origin: "*", // allow any domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(express.json());
@@ -273,7 +271,7 @@ const getAllStreams = () => {
 
   return Object.keys(parsed.paths).map((pathName) => ({
     name: pathName,
-    hlsUrl: `http://${VPS_IP}:8888/${pathName}/index.m3u8`,
+    hlsUrl: `https://api.productware.in:8888/${pathName}/index.m3u8`,
   }));
 };
 
@@ -295,7 +293,7 @@ app.get("/api/streams", (req, res) => {
    START SERVER
 ================================= */
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
   startMediaMTX();
 });
