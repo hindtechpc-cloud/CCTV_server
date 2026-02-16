@@ -271,7 +271,7 @@ const getAllStreams = () => {
 
   return Object.keys(parsed.paths).map((pathName) => ({
     name: pathName,
-    hlsUrl: `https://api.productware.in:8888/${pathName}/index.m3u8`,
+    hlsUrl: `http://api.productware.in:8888/${pathName}/index.m3u8`,
   }));
 };
 
